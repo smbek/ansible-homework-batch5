@@ -1,4 +1,4 @@
-- hosts: ubuntu22 
+- hosts: all
   tasks:
     - name: Update apt packages
       apt:
@@ -36,11 +36,11 @@
     - name: Creating user tester and add to the qa group
       user:
         name: tester
-        group: qa
+        groups: qa
         append: yes
 
     - name: Copy files from Homework1 folder to remote ubuntu22 machine
       copy:
-        src: "./"
+        src: /root/ansible-homework-batch5/Homework1
         dest: /root/
      
