@@ -1,4 +1,4 @@
-[ubuntu22]
-ubuntu22 ansible_host=PROVIDE_HERE_YOUR_OWN_VM_IP
+
+ubuntu22 ansible_host=64.225.9.230
 
 

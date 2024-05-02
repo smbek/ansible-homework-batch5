@@ -1,9 +1,9 @@
-- hosts: all
+- hosts: ubuntu22 
   tasks:
-    - name: Update apt apache
+    - name: Update apt packages
       apt:
-        update_cache: yes
-      
+        update_cache: yes    
+
     - name: Installing Apache, tree and git packages
       apt:
         name:
@@ -27,13 +27,13 @@
         - devops
         - qa
 
-    - name: Create the user Mairambek and add to the kaizen and qa groups
+    - name: Creating user Mairambek and add to kaizen and qa groups
       user:
         name: Mairambek
         groups: qa,kaizen
         append: yes
     
-    - name: Create the user tester and add to the qa group
+    - name: Creating user tester and add to the qa group
       user:
         name: tester
         group: qa
