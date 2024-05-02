@@ -37,7 +37,7 @@
       user:
         name: tester
         group: qa
-        state: present
+        append: yes
 
     - name: Copy files from Homework1 folder to remote ubuntu22 machine
       copy:
