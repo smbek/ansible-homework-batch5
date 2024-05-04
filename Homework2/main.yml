@@ -1,0 +1,80 @@
+- hosts: all
+  tasks:
+    - name: Installing epel-release and yum-utils to download updated version of PHP
+      yum: 
+        pkg: "{{ item }}" 
+        state: present
+      loop:
+      - epel-release
+      - yum-utils
+      - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+      tags: php
+    - name: enabling the PHP 7.4 Remi repository
+      command: yum-config-manager --enable remi-php74 -y
+      tags: php
+    - name: Installing PHP and other pkgs
+      yum: 
+        pkg: "{{ item }}"  
+        state: present
+      loop:
+      - php
+      - php-common
+      - php-mysql
+      - php-gd
+      - php-xml
+      - php-mbstring
+      - php-mcrypt
+      - php-xmlrpc
+      - unzip
+      - wget
+
+    - name: Download WordPress
+      get_url: url=https://wordpress.org/latest.zip dest=/tmp/wordpress.zip
+      ignore_errors: yes
+
+    - name: Unzip WordPress
+      unarchive: 
+        src: /tmp/wordpress.zip 
+        dest: /tmp 
+        copy: no
+      ignore_errors: yes
+
+    - name: Copy WordPress files into apache working dir /var/www/html/
+      command: cp -a /tmp/wordpress/. /var/www/html/ 
+      ignore_errors: yes
+
+    - name: Set ownership for WordPress files
+      file:
+        path: /var/www/html
+        state: directory
+        owner: apache
+        group: apache
+        recurse: yes
+
+    - name: Install apache web server
+      yum: 
+        pkg: httpd 
+        state: latest
+        
+    - name: Start and enable httpd
+      service: 
+        name: httpd 
+        state: restarted 
+        enabled: yes
+        
+    - name: Install MariaDB and start the service
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - mariadb
+        - mariadb-server
+
+    - name: Start and enable MariaDB
+      systemd:
+        name: mariadb
+        state: started
+        enabled: yes
+
+
+ 
