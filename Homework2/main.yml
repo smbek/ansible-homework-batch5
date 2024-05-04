@@ -49,6 +49,7 @@
         state: directory
         owner: apache
         group: apache
+        mode: '0755'
         recurse: yes
 
     - name: Install apache web server
